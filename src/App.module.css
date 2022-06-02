@@ -1,0 +1,10 @@
+.wrapper {
+  max-width: 70rem;
+  margin: 2rem auto;
+  padding: 0 1rem; /* Quando diminuir a tela o conteúdo fica espaçado */ 
+
+  display: grid;
+  grid-template-columns: 256px 1fr;
+  gap: 2rem;
+  align-items: flex-start; /* Se não usar ele força a sidebar a ter o mesmo tamanho do feed */
+}
