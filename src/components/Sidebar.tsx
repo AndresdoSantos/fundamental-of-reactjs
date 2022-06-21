@@ -1,6 +1,7 @@
 import { PencilLine } from 'phosphor-react';
 
 import styles from '../styles/components/Sidebar.module.css';
+import { Avatar } from './Avatar';
 
 export function Sidebar() {
   return (
@@ -12,10 +13,7 @@ export function Sidebar() {
 
       <div className={styles.profile}>
         {/** Quando a imagem vem de um input do usuário, não se coloca "alt" */}
-        <img
-          className={styles.avatar}
-          src="https://github.com/AndresdoSantos.png"
-        />
+        <Avatar src="https://github.com/AndresdoSantos.png" />
 
         <strong>Andres dos Santos</strong>
         <span>Web Developer</span>
