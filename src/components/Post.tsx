@@ -1,42 +1,77 @@
+import { format, formatDistanceToNow } from 'date-fns';
+import { ptBR } from 'date-fns/locale';
+
 import { Avatar } from './Avatar';
 import { Comment } from './Comment';
 
 import styles from '../styles/components/Post.module.css';
 
-export function Post() {
+type PostProps = {
+  author: {
+    avatar_url: string;
+    name: string;
+    role: string;
+  };
+  publishedAt: Date;
+  content: { type: 'paragraph' | 'link'; content: string }[];
+};
+
+export function Post({ author, content, publishedAt }: PostProps) {
+  const publishedDateFormatted = format(
+    publishedAt,
+    "d 'de' LLLL 'às' HH:mm'h'",
+    { locale: ptBR }
+  );
+
+  const publishedDateReativeToNow = formatDistanceToNow(publishedAt, {
+    locale: ptBR,
+    addSuffix: true,
+  });
+
   return (
     <article className={styles.post}>
       <header>
         <div className={styles.author}>
-          <Avatar src="https://github.com/AndresdoSantos.png" />
+          <Avatar src={author.avatar_url} />
 
           <div className={styles.authorInfo}>
-            <strong>Andres dos Santos</strong>
-            <span>Web developer</span>
+            <strong>{author.name}</strong>
+            <span>{author.role}</span>
           </div>
         </div>
 
-        <time title="11 de Maio às 08:13h" dateTime="2022-05-11 08:11:36">
-          Pubicado à 1h
+        <time
+          title={publishedDateFormatted}
+          dateTime={publishedAt.toISOString()}
+        >
+          {publishedDateReativeToNow}
         </time>
       </header>
 
       <div className={styles.content}>
-        <p>Fala galeraa 👋</p>
+        {content.map((line) => {
+          if (line.type === 'paragraph') {
+            return <p>{line.content}</p>;
+          } else if (line.type === 'link') {
+            return (
+              <p>
+                <a href="#">{line.content}</a>
+              </p>
+            );
+          }
+        })}
+
+        {/**  <p></p>
+
+        <p></p>
 
         <p>
-          Acabei de subir mais um projeto no meu portifa. É um projeto que fiz
-          no NLW Return, evento da Rocketseat. O nome do projeto é DoctorCare 🚀
+          👉 <a href=""></a>
         </p>
 
         <p>
-          👉 <a href="">jane.design/doctorcare</a>
-        </p>
-
-        <p>
-          <a href="">#novoprojeto</a> <a href="">#nlw</a>{' '}
-          <a href="">#rocketseat</a>
-        </p>
+          <a href=""></a> <a href=""></a> <a href=""></a>
+        </p> */}
       </div>
 
       <form className={styles.commentForm}>
