@@ -5,7 +5,12 @@ import { Avatar } from './Avatar';
 import { Comment } from './Comment';
 
 import styles from '../styles/components/Post.module.css';
-import { FormEvent, TextareaHTMLAttributes, useState } from 'react';
+import {
+  ChangeEvent,
+  FormEvent,
+  TextareaHTMLAttributes,
+  useState,
+} from 'react';
 
 type PostProps = {
   author: {
@@ -33,21 +38,21 @@ export function Post({ author, content, publishedAt }: PostProps) {
     addSuffix: true,
   });
 
-  function handleSubmit(e: FormEvent) {
-    e.preventDefault();
+  function handleSubmit(event: FormEvent) {
+    event.preventDefault();
 
     setComments((prev) => [...prev, newCommentText]);
 
     setNewCommentText('');
   }
 
-  function handleNewCommentChange(event: any) {
+  function handleNewCommentChange(event: ChangeEvent<HTMLTextAreaElement>) {
     event.target.setCustomValidity('');
 
     setNewCommentText(event.target.value);
   }
 
-  function handleNewCommentInvalid(event: any) {
+  function handleNewCommentInvalid(event: ChangeEvent<HTMLTextAreaElement>) {
     event.target.setCustomValidity('Esse campo é obigatório!');
   }
 
