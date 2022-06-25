@@ -5,7 +5,7 @@ import { Avatar } from './Avatar';
 import { Comment } from './Comment';
 
 import styles from '../styles/components/Post.module.css';
-import { FormEvent, useState } from 'react';
+import { FormEvent, TextareaHTMLAttributes, useState } from 'react';
 
 type PostProps = {
   author: {
@@ -41,11 +41,23 @@ export function Post({ author, content, publishedAt }: PostProps) {
     setNewCommentText('');
   }
 
+  function handleNewCommentChange(event: any) {
+    event.target.setCustomValidity('');
+
+    setNewCommentText(event.target.value);
+  }
+
+  function handleNewCommentInvalid(event: any) {
+    event.target.setCustomValidity('Esse campo é obigatório!');
+  }
+
   function removeComment(comment: string) {
     setComments((prev) => {
       return prev.filter((value) => value !== comment);
     });
   }
+
+  const isNewCommentEmpty = newCommentText.length === 0;
 
   return (
     <article className={styles.post}>
@@ -86,11 +98,15 @@ export function Post({ author, content, publishedAt }: PostProps) {
         <textarea
           placeholder="Deixe um comentário"
           value={newCommentText}
-          onChange={(e) => setNewCommentText(e.target.value)}
+          onChange={handleNewCommentChange}
+          required
+          onInvalid={handleNewCommentInvalid}
         />
 
         <footer>
-          <button type="submit">Publicar</button>
+          <button type="submit" disabled={isNewCommentEmpty}>
+            Publicar
+          </button>
         </footer>
       </form>
 
